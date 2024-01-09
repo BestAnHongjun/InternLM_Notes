@@ -10,7 +10,7 @@
 ![](./attach/lecture1_1.JPG)
 > <small> **Reference**: Zhao W X, Zhou K, Li J, et al. A survey of large language models[J]. arXiv preprint arXiv:2303.18223, 2023.</small>
 
-## 二、书生·浦语大模型系列di
+## 二、书生·浦语大模型系列
 |名称|参数量|特点|适用b场景|
 |:-|:-|:-|:-|
 |InternLM-7B|70亿|小巧轻便，便于部署<br>支持8k语境窗口长度<br>支持多种工具调用模板|社区低成本可用最佳模型规模|
