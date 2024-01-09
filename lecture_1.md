@@ -42,9 +42,10 @@
 **大模型已发展成为通用人工智能的重要途经！**
 
 ![](./attach/lecture1_1.JPG)
-> <small> **Reference**: Zhao W X, Zhou K, Li J, et al. A survey of large language models[J]. arXiv preprint arXiv:2303.18223, 2023.</small>
 
 ![](./attach/lecture1_4.JPG)
+
+> <small> **Reference**: Zhao W X, Zhou K, Li J, et al. A survey of large language models[J]. arXiv preprint arXiv:2303.18223, 2023.</small>
 
 #### 1.2 常见大模型
 
