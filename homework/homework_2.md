@@ -19,3 +19,5 @@
 ### 2.作业二
 
 * 完成Lagent工具调用Demo创作部署
+
+![](../attach/homework_2_2.jpg)
