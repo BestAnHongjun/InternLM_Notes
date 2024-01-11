@@ -521,3 +521,70 @@ streamlit run /root/code/lagent/examples/react_web_demo.py --server.address 127.
 ```
 
 ## 五、浦语·灵笔图文创作理解Demo
+
+### 1.环境准备
+
+新建一个`conda`环境。
+
+```sh
+/root/share/install_conda_env_internlm_base.sh xcomposer-demo
+```
+
+激活环境。
+
+```sh
+conda activate xcomposer-demo
+```
+
+安装依赖包。
+
+```sh
+pip install transformers==4.33.1 timm==0.4.12 sentencepiece==0.1.99 gradio==3.44.4 markdown2==2.4.10 xlsxwriter==3.1.2 einops accelerate
+```
+
+### 2.模型下载
+
+#### 复制方式
+
+```sh
+mkdir -p /root/model/Shanghai_AI_Laboratory
+cp -r /root/share/temp/model_repos/internlm-xcomposer-7b /root/model/Shanghai_AI_Laboratory
+```
+
+#### ModelScope方式
+
+安装`modelscope`方式。
+
+```sh
+pip install modelscope==1.9.5
+```
+
+在`/root/model`路径下新建`download.py`，并运行以下内容。
+
+```py
+import torch
+from modelscope import snapshot_download, AutoModel, AutoTokenizer
+import os
+model_dir = snapshot_download('Shanghai_AI_Laboratory/internlm-xcomposer-7b', cache_dir='/root/model', revision='master')
+```
+
+### 3.代码准备
+
+下载代码仓库。
+
+```sh
+cd /root/code
+git clone https://gitee.com/internlm/InternLM-XComposer.git
+cd /root/code/InternLM-XComposer
+git checkout 3e8c79051a1356b9c388a6447867355c0634932d  # 最好保证和教程的 commit 版本一致
+```
+
+### 4.运行Demo
+
+```sh
+cd /root/code/InternLM-XComposer
+python examples/web_demo.py  \
+    --folder /root/model/Shanghai_AI_Laboratory/internlm-xcomposer-7b \
+    --num_gpus 1 \
+    --port 6006
+```
