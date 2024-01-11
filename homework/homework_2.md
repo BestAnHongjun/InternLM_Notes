@@ -5,6 +5,8 @@
 ### 1.作业一
 * 使用InternLM-Chat-7B模型生成300字的小故事。
 
+![](../attach/homework_2_1.jpg)
+
 ### 2.作业二
 * 熟悉Hugging Face下载功能，使用`huggingface_hub`python包，下载InternLM-20B的config.json文件到本地。
 
