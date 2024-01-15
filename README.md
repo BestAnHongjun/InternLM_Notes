@@ -9,3 +9,4 @@
 ### 课后作业
 * [【Lecture 1】无](#)
 * [【Lecture 2】课后作业](./homework/homework_2.md) 
+* [【Lecture 3】课后作业](./homework/homework_3.md)
