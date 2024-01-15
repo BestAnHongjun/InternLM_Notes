@@ -23,6 +23,36 @@
 
 ![](../attach/homework_3_5.JPG)
 
+### 2.知识库搭建
+
+#### (1)数据收集
+
+下载开源代码仓库。
+
+![](../attach/homework_3_6.JPG)
+
+#### (2)加载数据
+加载数据后，由icecreame库的输出结果：
+
+![](../attach/homework_3_7.JPG)
+
+#### (3)构建向量数据库
+
+![](../attach/homework_3_8.JPG)
+
+### 3.InternLM接入LangChain
+
+![](../attach/homework_3_9.JPG)
+![](../attach/homework_3_10.JPG)
+
+### 4.构建检索问答链
+
+![](../attach/homework_3_11.JPG)
+
+### 5.部署Web Demo
+![](../attach/homework_3_12.JPG)
+
 ## 进阶作业
-### 1.作业一
 * 选择一个垂直领域，收集该领域的专业资料构建专业知识库，并搭建专业问答助手，并在 OpenXLab 上成功部署（截图，并提供应用地址）
+
+*开发中，将与“整体实训营项目”一起展示。*
