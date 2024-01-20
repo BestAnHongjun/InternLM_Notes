@@ -143,4 +143,373 @@ xtuner chat internlm/internlm-chat-20b --adapater $ADAPTER_DIR
 ```
 
 ## 三、8GB显卡玩转LLM
+
+XTuner的优化技巧
+
+### 1.Flash Attention
+
+Flash Attention将Attention计算并行化，避免了计算过程中Attention Score NxN的显存占用。
+
+### 2.DeepSpeed ZeRO
+
+ZeRO优化，通过将训练过程中的参数、梯度和优化器状态切片保存，能够在多GPU训练时显著节省显存；
+
+除了将训练中间状态切片外，DeepSpeed训练时使用FP16的权重，相较于PyTorch的AMP训练，在单GPU上也能大幅节省显存。
+
 ## 四、动手实战环节
+
+### 1.环境配置
+
+克隆conda环境，或创建新的conda环境
+
+```sh
+# 在开发机上
+/root/share/install_conda_env_internlm_base.sh xtuner0.1.9
+
+# 其他平台
+conda create -n xtuner0.1.9 python=3.10 -y
+```
+
+激活环境
+
+```sh
+conda activate xtuner0.1.9
+```
+
+创建文件夹
+
+```sh
+cd ~
+mkdir xtuner019 && cd xtuner019
+```
+
+拉取0.1.9版本的代码
+
+```sh
+git clone -b v0.1.9 https://github.com/InternLM/xtuner
+# git clone -b v0.1.9 https://gitee.com/Internlm/xtuner
+```
+
+进入源码目录
+
+```sh
+cd xtuner
+```
+
+从源码安装XTuner
+
+```sh
+pip install -e '.[all]'
+```
+
+准备数据集目录
+
+```sh
+mkdir ~/ft-oasst1 && cd ~/ft-oasst1
+```
+
+### 2.微调
+
+#### (1)准备配置文件
+
+XTuner提供多个开箱即用的配置文件，用户可通过以下命令查看：
+
+```sh
+# 列出所有内置配置
+xtuner list-cfg
+```
+
+拷贝一个配置文件到当前目录
+
+```sh
+cd ~/ft-oasst1
+xtuner copy-cfg internlm_chat_7b_qlora_oasst1_e3 .
+```
+
+#### (2)模型下载
+
+##### InternStudio拷贝法
+
+```sh
+cp -r /root/share/temp/model_repos/internlm-chat-7b ~/ft-oasst1/
+```
+
+##### HuggingFace拉取法
+
+```sh
+# 创建一个目录，放模型文件，防止散落一地
+mkdir ~/ft-oasst1/internlm-chat-7b
+
+# 装一下拉取模型文件要用的库
+pip install modelscope
+
+# 从 modelscope 下载下载模型文件
+cd ~/ft-oasst1
+apt install git git-lfs -y
+git lfs install
+git lfs clone https://modelscope.cn/Shanghai_AI_Laboratory/internlm-chat-7b.git -b v1.0.3
+```
+
+#### (3)数据集下载
+
+> https://huggingface.co/datasets/timdettmers/openassistant-guanaco/tree/main
+
+InternStudio可直接拷贝：
+
+```sh
+cd ~/ft-oasst1
+# ...-guanaco 后面有个空格和英文句号啊
+cp -r /root/share/temp/datasets/openassistant-guanaco .
+```
+
+此时路径应该长这样：
+
+```sh
+|-- internlm-chat-7b
+|   |-- README.md
+|   |-- config.json
+|   |-- configuration.json
+|   |-- configuration_internlm.py
+|   |-- generation_config.json
+|   |-- modeling_internlm.py
+|   |-- pytorch_model-00001-of-00008.bin
+|   |-- pytorch_model-00002-of-00008.bin
+|   |-- pytorch_model-00003-of-00008.bin
+|   |-- pytorch_model-00004-of-00008.bin
+|   |-- pytorch_model-00005-of-00008.bin
+|   |-- pytorch_model-00006-of-00008.bin
+|   |-- pytorch_model-00007-of-00008.bin
+|   |-- pytorch_model-00008-of-00008.bin
+|   |-- pytorch_model.bin.index.json
+|   |-- special_tokens_map.json
+|   |-- tokenization_internlm.py
+|   |-- tokenizer.model
+|   `-- tokenizer_config.json
+|-- internlm_chat_7b_qlora_oasst1_e3_copy.py
+`-- openassistant-guanaco
+    |-- openassistant_best_replies_eval.jsonl
+    `-- openassistant_best_replies_train.jsonl
+```
+
+#### (4)修改配置文件
+
+```sh
+cd ~/ft-oasst1
+vim internlm_chat_7b_qlora_oasst1_e3_copy.py
+```
+
+减号代表要删除的行，加号代表要增加的行。
+
+```git
+# 修改模型为本地路径
+- pretrained_model_name_or_path = 'internlm/internlm-chat-7b'
++ pretrained_model_name_or_path = './internlm-chat-7b'
+
+# 修改训练数据集为本地路径
+- data_path = 'timdettmers/openassistant-guanaco'
++ data_path = './openassistant-guanaco'
+```
+
+#### (5)开始微调
+
+* 训练：
+
+```sh
+xtuner train ${CONFIG_NAME_OR_PATH}
+```
+
+* 也可以增加deepspeed进行训练加速：
+
+```sh
+xtuner train ${CONFIG_NAME_OR_PATH} --deepspeed deepspeed_zero2
+```
+
+* 举例：
+
+```sh
+# 单卡
+## 用刚才改好的config文件训练
+xtuner train ./internlm_chat_7b_qlora_oasst1_e3_copy.py
+
+# 多卡
+NPROC_PER_NODE=${GPU_NUM} xtuner train ./internlm_chat_7b_qlora_oasst1_e3_copy.py
+
+# 若要开启 deepspeed 加速，增加 --deepspeed deepspeed_zero2 即可
+```
+
+* 训练完成后，文件保存在`./work_dirs`中。
+
+```sh
+|-- internlm-chat-7b
+|-- internlm_chat_7b_qlora_oasst1_e3_copy.py
+|-- openassistant-guanaco
+|   |-- openassistant_best_replies_eval.jsonl
+|   `-- openassistant_best_replies_train.jsonl
+`-- work_dirs
+    `-- internlm_chat_7b_qlora_oasst1_e3_copy
+        |-- 20231101_152923
+        |   |-- 20231101_152923.log
+        |   `-- vis_data
+        |       |-- 20231101_152923.json
+        |       |-- config.py
+        |       `-- scalars.json
+        |-- epoch_1.pth
+        |-- epoch_2.pth
+        |-- epoch_3.pth
+        |-- internlm_chat_7b_qlora_oasst1_e3_copy.py
+        `-- last_checkpoint
+```
+
+#### (6)模型转换
+
+将得到的 PTH 模型转换为 HuggingFace 模型，即：生成 Adapter 文件夹
+
+```sh
+mkdir hf
+export MKL_SERVICE_FORCE_INTEL=1
+
+xtuner convert pth_to_hf ./internlm_chat_7b_qlora_oasst1_e3_copy.py ./work_dirs/internlm_chat_7b_qlora_oasst1_e3_copy/epoch_1.pth ./hf
+```
+
+此时，路径应该长这样：
+
+```sh
+|-- internlm-chat-7b
+|-- internlm_chat_7b_qlora_oasst1_e3_copy.py
+|-- openassistant-guanaco
+|   |-- openassistant_best_replies_eval.jsonl
+|   `-- openassistant_best_replies_train.jsonl
+|-- hf
+|   |-- README.md
+|   |-- adapter_config.json
+|   |-- adapter_model.bin
+|   `-- xtuner_config.py
+`-- work_dirs
+    `-- internlm_chat_7b_qlora_oasst1_e3_copy
+        |-- 20231101_152923
+        |   |-- 20231101_152923.log
+        |   `-- vis_data
+        |       |-- 20231101_152923.json
+        |       |-- config.py
+        |       `-- scalars.json
+        |-- epoch_1.pth
+        |-- epoch_2.pth
+        |-- epoch_3.pth
+        |-- internlm_chat_7b_qlora_oasst1_e3_copy.py
+        `-- last_checkpoint
+```
+
+**此时，hf 文件夹即为我们平时所理解的所谓 “LoRA 模型文件”**
+> 可以简单理解：LoRA 模型文件 = Adapter
+
+### 3.自定义微调
+
+#### (1)准备数据集
+
+自定义一个`json`格式的数据集，样例：
+
+```json
+[{
+    "conversation":[
+        {
+            "system": "xxx",
+            "input": "xxx",
+            "output": "xxx"
+        }
+    ]
+},
+{
+    "conversation":[
+        {
+            "system": "xxx",
+            "input": "xxx",
+            "output": "xxx"
+        }
+    ]
+}]
+```
+
+#### (2)开始自定义微调
+
+新建文件夹
+
+```
+mkdir ~/ft-medqa && cd ~/ft-medqa
+```
+
+把前面下载好的internlm-chat-7b模型文件夹拷贝过来。
+
+```sh
+cp -r ~/ft-oasst1/internlm-chat-7b .
+```
+
+准备配置文件
+
+```sh
+# 复制配置文件到当前目录
+xtuner copy-cfg internlm_chat_7b_qlora_oasst1_e3 .
+# 改个文件名
+mv internlm_chat_7b_qlora_oasst1_e3_copy.py internlm_chat_7b_qlora_medqa2019_e3.py
+
+# 修改配置文件内容
+vim internlm_chat_7b_qlora_medqa2019_e3.py
+```
+
+减号代表要删除的行，加号代表要增加的行。
+
+```git 
+# 修改import部分
+- from xtuner.dataset.map_fns import oasst1_map_fn, template_map_fn_factory
++ from xtuner.dataset.map_fns import template_map_fn_factory
+
+# 修改模型为本地路径
+- pretrained_model_name_or_path = 'internlm/internlm-chat-7b'
++ pretrained_model_name_or_path = './internlm-chat-7b'
+
+# 修改训练数据为 MedQA2019-structured-train.jsonl 路径
+- data_path = 'timdettmers/openassistant-guanaco'
++ data_path = 'MedQA2019-structured-train.jsonl'
+
+# 修改 train_dataset 对象
+train_dataset = dict(
+    type=process_hf_dataset,
+-   dataset=dict(type=load_dataset, path=data_path),
++   dataset=dict(type=load_dataset, path='json', data_files=dict(train=data_path)),
+    tokenizer=tokenizer,
+    max_length=max_length,
+-   dataset_map_fn=alpaca_map_fn,
++   dataset_map_fn=None,
+    template_map_fn=dict(
+        type=template_map_fn_factory, template=prompt_template),
+    remove_unused_columns=True,
+    shuffle_before_pack=True,
+    pack_to_max_length=pack_to_max_length)
+```
+
+开始微调。
+
+```sh
+xtuner train internlm_chat_7b_qlora_medqa2019_e3.py --deepspeed deepspeed_zero2
+```
+
+### 4.部署与测试
+
+#### (1)将HuggingFace Adapter合并到大语言模型
+
+```sh
+xtuner convert merge ./internlm-chat-7b ./hf ./merged --max-shard-size 2GB
+# xtuner convert merge \
+#     ${NAME_OR_PATH_TO_LLM} \
+#     ${NAME_OR_PATH_TO_ADAPTER} \
+#     ${SAVE_PATH} \
+#     --max-shard-size 2GB
+```
+
+#### (2)与合并后的模型对话
+```sh
+# 加载 Adapter 模型对话（Float 16）
+xtuner chat ./merged --prompt-template internlm_chat
+
+# 4 bit 量化加载
+# xtuner chat ./merged --bits 4 --prompt-template internlm_chat
+```
