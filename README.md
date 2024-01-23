@@ -8,6 +8,7 @@
 * [【Lecture 3】基于InternLM和LangChain搭建你的知识库](./notes/lecture_3.md)
 * [【Lecture 4】XTuner 大模型单卡低成本微调实战](./notes/lecture_4.md)
 * [【Lecture 5】LMDeploy大模型量化部署实践](./notes/lecture_5.md)
+* [【Lecture 6】OpenCompass大模型评测](./notes/lecture_6.md)
 
 ### 课后作业
 * [【Lecture 1】无](#)
