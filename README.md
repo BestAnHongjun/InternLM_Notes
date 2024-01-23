@@ -1,4 +1,5 @@
 # 书生·浦语大模型实战营
+[实战营官方文档链接](https://github.com/InternLM/tutorial/)
 > ID:1336 BestAnHongjun
 
 ### 课程笔记
