@@ -1,4 +1,4 @@
-# 【Lectrue-5】课后作业
+# 【Lectrue-6】课后作业
 
 ## 基础作业
 * 使用 OpenCompass 评测 InternLM2-Chat-7B 模型在 C-Eval 数据集上的性能
@@ -31,6 +31,9 @@ python run.py \
     --num-gpus 1 \
     --debug
 ```
+### 4.评测结果
+
+![](../attach/homework_6_1.png)
 
 ## 进阶作业
 * 使用 OpenCompass 评测 InternLM2-Chat-7B 模型使用 LMDeploy 0.2.0 部署后在 C-Eval 数据集上的性能
