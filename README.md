@@ -14,8 +14,8 @@
 
 ### 课后作业
 * [【Lecture 1】无](#)
-* [【Lecture 2】课后作业](./homework/homework_2.md) 
-* [【Lecture 3】课后作业](./homework/homework_3.md)
-* [【Lecture 4】课后作业](./homework/homework_4.md)
-* [【Lecture 5】课后作业](./homework/homework_5.md)
-* [【Lecture 6】课后作业](./homework/homework_6.md)
+* [【Lecture 2】课后作业](./homework/homework_2.md) √基础  √进阶
+* [【Lecture 3】课后作业](./homework/homework_3.md) √基础
+* [【Lecture 4】课后作业](./homework/homework_4.md) √基础  √进阶
+* [【Lecture 5】课后作业](./homework/homework_5.md) √基础
+* [【Lecture 6】课后作业](./homework/homework_6.md) √基础  √进阶

@@ -136,4 +136,7 @@ xtuner convert merge \
 * 将训练好的Adapter模型权重上传到 OpenXLab、Hugging Face 或者 MoelScope 任一一平台
 * 将训练好后的模型应用部署到 OpenXLab 平台
 
+已将模型权重上传到OpenXLab，链接：
+https://openxlab.org.cn/models/detail/Coder-AN/InternLM-History
+
 *开发中，将与“整体实训营项目”一起展示。*
