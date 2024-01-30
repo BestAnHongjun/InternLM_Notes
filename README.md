@@ -19,7 +19,11 @@
 * [【Lecture 6】课后作业](./homework/homework_6.md) ✅基础  ✅进阶
 
 ### 大作业
-[[大作业：基于InternLM大模型的中学历史学习助手]](https://github.com/BestAnHongjun/InternLM-History)
+
+#### 主题：基于InternLM大模型的中学历史学习助手
+[[GitHub仓库地址]](https://github.com/BestAnHongjun/InternLM-History)
 
 OpenXLab部署地址：
 https://openxlab.org.cn/apps/detail/Coder-AN/InternLM-History
+
+（仍在开发中）
