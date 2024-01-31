@@ -19,6 +19,8 @@
 
 ### 1.作业一
 
+开发中。
+
 ### 2.作业二
 
 #### 2.1 准备工作
@@ -142,4 +144,28 @@ lmdeploy serve api_server ./model/internlm-chat-7b-turbomind-w4a16/ \
 
 ### 3.作业三
 
-*开发中，将与“整体实训营项目”一起展示。*
+#### 3.1 准备工作
+
+##### (1)转为TurboMind模型
+
+```sh
+lmdeploy convert internlm-chat-7b ./model/internlm-chat-7b-history -dst-path ./model/internlm-chat-7b-history-turbomind
+```
+
+##### (2)计算min-max
+
+```sh
+lmdeploy lite calibrate \
+  --model  model/internlm-chat-7b-history/ \
+  --calib_dataset "ptb" \
+  --calib_samples 128 \
+  --calib_seqlen 2048 \
+  --work_dir ./model/internlm-chat-7b-history-quant
+```
+
+##### (3)运行baseline
+
+```sh
+```
+
+开发中。
