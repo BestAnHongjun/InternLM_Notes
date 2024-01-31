@@ -165,7 +165,51 @@ lmdeploy lite calibrate \
 
 ##### (3)运行baseline
 
-```sh
+```py
+from lmdeploy import turbomind as tm
+
+# load model
+model_path = "./model/internlm-chat-7b-history-turbomind"
+tm_model = tm.TurboMind.from_pretrained(model_path)
+generator = tm_model.create_instance()
+
+questions = [
+    "你是谁？",
+    "你的开发者是谁？",
+    "为什么要开发你？",
+    "商君治秦，法令至行，公平无私，罚不讳强大，赏不私亲近……这段话可以看出商鞅推行变法赏罚分明。商鞅在军事上的奖励措施是？",
+    "文艺复兴时期，意大利艺术家以更写实的手法描绘人物形象，诗人们则更关注人们的天性，这表明当时文学艺术作品宣扬的思想是？",
+    "民族解放运动的成功，离不开民族觉醒和人民的不懈努力。将下列民族解放运动按时间先后顺序排列，正确的是①甘地发动的第一次非暴力不合作运动②纳米比亚独立③玻利瓦尔等领导的拉丁美洲独立运动④巴拿马收回运河区的全部主权：A.①②③④ B.②①③④ C.③①④② D.③①②④"
+]
+
+PROMPT_TEMPLATE = """
+<|System|>:你是中学历史学习助手，内在是InternLM-7B大模型。你的开发者是安泓郡。开发你的目的是为了提升中学生对历史学科的学习效果。你将对中学历史知识点做详细、耐心、充分的解答。
+<|User|>:{}
+<|Bot|>:"""
+
+ans = []
+
+for query in questions:
+    prompt = PROMPT_TEMPLATE.format(query)
+    input_ids = tm_model.tokenizer.encode(prompt)
+
+    # inference
+    for outputs in generator.stream_infer(
+            session_id=0,
+            input_ids=[input_ids]):
+        res, tokens = outputs[0]
+
+
+    response = tm_model.tokenizer.decode(res.tolist())
+    ans.append((query, response))
+
+print()
+for query, response in ans:
+    print("Question:", query)
+    print("Ans:", response, end="\n\n")
+
 ```
+
+![](../attach/homework_5_3.jpg)
 
 开发中。
