@@ -212,4 +212,72 @@ for query, response in ans:
 
 ![](../attach/homework_5_3.jpg)
 
-开发中。
+#### 3.2 KV Cache量化
+
+##### (1)获取量化参数
+
+```sh
+lmdeploy lite kv_qparams \
+  --work_dir ./model/internlm-chat-7b-history-quant  \
+  --turbomind_dir ./model/internlm-chat-7b-history-turbomind/triton_models/weights/ \
+  --kv_sym False \
+  --num_tp 1
+```
+
+##### (2)修改参数
+
+```ini
+quant_policy = 4
+```
+
+##### (3)运行代码
+
+![](../attach/homework_5_4.jpg)
+
+#### 3.3 W4A16量化
+
+##### (1)获取量化参数
+
+```sh
+lmdeploy lite auto_awq \
+  --model  ./model/internlm-chat-7b-history/ \
+  --w_bits 4 \
+  --w_group_size 128 \
+  --work_dir ./model/internlm-chat-7b-history-quant
+```
+
+##### (2)转换成TurboMind格式
+
+```sh
+lmdeploy convert  internlm-chat-7b \
+    ./model/internlm-chat-7b-history-quant \
+    --model-format awq \
+    --group-size 128 \
+    --dst_path ./model/internlm-chat-7b-history-turbomind-w4a16
+```
+
+##### (3)修改代码
+
+```py
+model_path = "./model/internlm-chat-7b-history-turbomind-w4a16"
+```
+
+##### (4)运行代码
+
+![](../attach/homework_5_5.jpg)
+
+#### 3.4 KV Cache+W4A16量化
+
+##### (1)修改配置文件
+
+```ini
+quant_policy = 4
+```
+
+##### (2)运行代码
+
+![](../attach/homework_5_6.jpg)
+
+#### 3.5 总结
+
+选择W4A16量化最为合适。
