@@ -15,7 +15,7 @@
 * [【Lecture 2】课后作业](./homework/homework_2.md) ✅基础  ✅进阶
 * [【Lecture 3】课后作业](./homework/homework_3.md) ✅基础
 * [【Lecture 4】课后作业](./homework/homework_4.md) ✅基础  ✅进阶
-* [【Lecture 5】课后作业](./homework/homework_5.md) ✅基础
+* [【Lecture 5】课后作业](./homework/homework_5.md) ✅基础  ✅进阶
 * [【Lecture 6】课后作业](./homework/homework_6.md) ✅基础  ✅进阶
 
 ### 大作业
