@@ -25,5 +25,3 @@
 
 OpenXLab部署地址：
 https://openxlab.org.cn/apps/detail/Coder-AN/InternLM-History
-
-（仍在开发中）
