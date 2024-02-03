@@ -55,4 +55,6 @@
 ## 进阶作业
 * 选择一个垂直领域，收集该领域的专业资料构建专业知识库，并搭建专业问答助手，并在 OpenXLab 上成功部署（截图，并提供应用地址）
 
-*开发中，将与“整体实训营项目”一起展示。*
+OpenXLab地址：https://openxlab.org.cn/apps/detail/Coder-AN/InternLM-History
+
+![](../attach/project_internlm_history_demo.jpg)

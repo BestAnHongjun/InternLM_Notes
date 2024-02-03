@@ -144,4 +144,6 @@ https://openxlab.org.cn/models/detail/Coder-AN/InternLM-History-Adapter
 
 ### 2.作业二
 
-*开发中，将与“整体实训营项目”一起展示。*
+OpenXLab地址：https://openxlab.org.cn/apps/detail/Coder-AN/InternLM-History
+
+![](../attach/project_internlm_history_demo.jpg)

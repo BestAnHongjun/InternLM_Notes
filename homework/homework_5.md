@@ -19,9 +19,9 @@
 
 ### 1.作业一
 
-![](../attach/homework_5_7.jpg)
+OpenXLab地址：https://openxlab.org.cn/apps/detail/Coder-AN/InternLM-History
 
-本地测试已调通。平台目前访问不了，等恢复正常后往OpenXLab部署……
+![](../attach/project_internlm_history_demo.jpg)
 
 ### 2.作业二
 
